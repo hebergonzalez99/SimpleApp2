@@ -7,19 +7,19 @@ import { Person } from 'src/app/Classes/person';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent {
-  gender = ['Male', 'Female', 'Other'];
+  gender = ['Male', 'Female', 'Other', "I'd rather not say"];
   today = new Date()
-
-  model = new Person(18, 'Heber', 'Gonzalez', this.today, this.gender[0]);
+  fifteenYears = new Date(new Date().setFullYear(this.today.getFullYear() - 15))
+  model = new Person('', '', this.fifteenYears, '');
 
   submitted = false;
-
+  
  
 
   onSubmit() { this.submitted = true; }
 
   newPerson(){
-    this.model = new Person(42, '', '', this.today);
+    this.model = new Person('', '', this.fifteenYears);
   }
 
   ngOnInit(){

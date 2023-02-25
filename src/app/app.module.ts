@@ -6,6 +6,7 @@ import {CardModule} from 'primeng/card';
 import {DropdownModule} from 'primeng/dropdown';
 import {CalendarModule} from 'primeng/calendar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './Components/navbar/navbar.component';
@@ -26,7 +27,8 @@ import { FormComponent } from './Components/form/form.component';
     CardModule,
     DropdownModule,
     CalendarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    TooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
