@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Person } from 'src/app/Classes/person';
+import { APIService } from 'src/app/Services/api.service';
 
 @Component({
   selector: 'app-form',
@@ -11,12 +13,37 @@ export class FormComponent {
   today = new Date()
   fifteenYears = new Date(new Date().setFullYear(this.today.getFullYear() - 15))
   model = new Person('', '', this.fifteenYears, '');
-
+  bd = '';
   submitted = false;
   
+  constructor(private API:APIService, private router: Router){}
  
 
-  onSubmit() { this.submitted = true; }
+  onSubmit() { 
+    this.submitted = true; 
+    this.bd = this.model.birthdate.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
+  sendData(){
+    
+    let ageInMillis = Date.now() - this.model.birthdate.getTime();
+    let age = Math.floor(ageInMillis / (1000*60*60*24*365.25));
+    this.API.post( 
+    {
+      "name":this.model.name,
+      "lastname":this.model.lastname,
+      "gender":this.model.gender,
+      "birthdate":this.bd,
+      "age":age
+    }
+    ).subscribe(res => {
+      console.log("success!");
+    })
+    window.location.reload();
+  }
 
   newPerson(){
     this.model = new Person('', '', this.fifteenYears);

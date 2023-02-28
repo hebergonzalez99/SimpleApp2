@@ -1,0 +1,73 @@
+import { Component } from '@angular/core';
+import { Person } from 'src/app/Classes/person';
+
+import { APIService } from 'src/app/Services/api.service';
+
+@Component({
+  selector: 'app-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.css']
+})
+export class EditComponent {
+  g = ['Male', 'Female', 'Other', "I'd rather not say"];
+
+  public data:any = [];
+  today = new Date()
+  fifteenYears = new Date(new Date().setFullYear(this.today.getFullYear() - 15))
+  public defaultDate: Date = new Date();
+  name: string;
+  lastname: string;
+  gender: string;
+  bd = '';
+
+  ngOnInit(): void {
+    this.loadData(1);
+    
+  }
+
+  public loadData(id:Number){
+    this.API.get(id).subscribe(res=>{
+      this.data = res;
+      this.defaultDate = this.getDateFromString(this.data.birthdate);
+      this.name = this.data.name;
+      this.lastname = this.data.lastname;
+      this.gender = this.data.gender;
+    });
+    
+  }
+  public getDateFromString(dateString: string): Date {
+    const [dd, mm, yyyy] = dateString.split('/');
+    const date =  new Date(Number(yyyy), Number(mm) - 1, Number(dd), 0, 0, 0);
+    return date;
+  }
+  onSubmit(){
+    this.bd = this.defaultDate.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+    this.sendData(1);
+  }
+
+  sendData(id:Number){
+    let ageInMillis = Date.now() - this.defaultDate.getTime();
+    let age = Math.floor(ageInMillis / (1000*60*60*24*365.25));
+    this.API.put(id, 
+    {
+      "name":this.name,
+      "lastname":this.lastname,
+      "gender":this.gender,
+      "birthdate":this.bd,
+      "age":age
+    }
+    ).subscribe(res => {
+      console.log("success!");
+    })
+  }
+  constructor(private API:APIService){
+    this.name = this.data.name;
+    this.lastname = this.data.lastname;
+    this.gender = this.data.gender;
+    
+  }
+}

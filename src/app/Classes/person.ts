@@ -3,7 +3,7 @@ export class Person {
         
         public name: string,
         public lastname: string,
-        public date: Date,
+        public birthdate: Date,
         public gender?: string,
     ) {}
 }

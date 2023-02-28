@@ -1,6 +1,8 @@
-<div [hidden]="submitted" class="p-fluid grid formgrid">
-    <form (ngSubmit)="onSubmit()" #personForm="ngForm" name="">
-        {{ model | json }}
+<div class="d-flex justify-content-center">
+  <p-card>
+    <div [hidden]="submitted" class="p-fluid grid formgrid">
+      <form (ngSubmit)="onSubmit()" #personForm="ngForm" name="">
+          {{ model | json }}
         <div class="form-group">
             <label for="name">First Name &nbsp;<i style="color:red;" pTooltip="Required">*</i></label>
             <input type="text" class="form-control"  id="name" required [(ngModel)]="model.name" name="name" #name="ngModel"> 
@@ -31,30 +33,40 @@
         <div class="field col-12">
             <label for="basic">Date of Birth &nbsp; </label>
             <i class="pi pi-question-circle" pTooltip="You must be 15 years or older"></i><br>
-            <p-calendar dateFormat="dd.mm.yy" id="basic" inputId="basic" name="calendar" [maxDate]="fifteenYears" [(ngModel)]="model.date"></p-calendar>
+            <p-calendar dateFormat="dd.mm.yy" id="basic" inputId="basic" name="calendar" [maxDate]="fifteenYears" [(ngModel)]="model.birthdate"></p-calendar>
             
         </div> <br>
-        <button type="submit" class="btn btn-success" [disabled]="!personForm.form.valid">Submit</button>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col">
+              <button type="submit" class="btn btn-success" [disabled]="!personForm.form.valid">Submit</button>
+            </div>
+            
+          </div>
+        </div>
       </form>
+    </div>
+    <div [hidden]="!submitted">
+      <h2>You submitted the following:</h2>
+      <div class="row">
+        <div class="col-xs-3">Name</div>
+        <div class="col-xs-9">{{ model.name }}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">Last Name</div>
+        <div class="col-xs-9">{{ model.lastname }}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">Gender</div>
+        <div class="col-xs-9">{{ model.gender }}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">Date of Birth</div>
+        <div class="col-xs-9">{{ bd }}</div>
+      </div>
+      
+      <button type="button" class="btn btn-primary" (click)="submitted=false">Edit</button>
+      <button type="button" class="btn btn-success" (click)="sendData()">Send</button>
+    </div>
+  </p-card>
 </div>
-<div [hidden]="!submitted">
-    <h2>You submitted the following:</h2>
-    <div class="row">
-      <div class="col-xs-3">Name</div>
-      <div class="col-xs-9">{{ model.name }}</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-3">Last Name</div>
-      <div class="col-xs-9">{{ model.lastname }}</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-3">Gender</div>
-      <div class="col-xs-9">{{ model.gender }}</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-3">Date of Birth</div>
-      <div class="col-xs-9">{{ model.date }}</div>
-    </div>
-    
-    <button type="button" class="btn btn-primary" (click)="submitted=false">Edit</button>
-  </div>

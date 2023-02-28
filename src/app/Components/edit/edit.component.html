@@ -1,0 +1,34 @@
+<div class="p-fluid grid formgrid">
+    <form (ngSubmit)="onSubmit()" #editForm="ngForm" name="">
+        
+        <div class="field col-12">
+            <label for="name">Name &nbsp;<i style="color:red;" pTooltip="Required">*</i> </label>
+            
+            <input type="text" pInputText [(ngModel)]="name" name="name" [required]="true"> 
+            
+        </div> <br>
+        <div class="field col-12">
+            <label for="name">Last Name &nbsp;<i style="color:red;" pTooltip="Required">*</i> </label>
+            
+            <input type="text" pInputText [(ngModel)]="lastname" name="lastname" [required]="true"> 
+            
+        </div> <br>
+        
+    
+        <div class="form-group">
+            <label for="gender">Gender&nbsp;<i style="color:red;" pTooltip="Required">*</i></label>
+            <p-dropdown name="gender" [options]="g" [(ngModel)]="gender" placeholder="Select one" [showClear]="true" [required]="true"></p-dropdown>
+
+
+            
+        </div> <br>
+        
+        <div class="field col-12">
+            <label for="basic">Date of Birth &nbsp; </label>
+            <i class="pi pi-question-circle" pTooltip="You must be 15 years or older"></i><br>
+            <p-calendar dateFormat="dd.mm.yy" id="basic" inputId="basic" name="calendar" [maxDate]="fifteenYears" [(ngModel)]="defaultDate"></p-calendar>
+            
+        </div> <br>
+        <button type="submit" class="btn btn-success" [disabled]="!editForm.form.valid">Submit</button>
+    </form>
+</div>
