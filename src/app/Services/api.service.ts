@@ -16,7 +16,7 @@ export class APIService {
 
   public get(id?:Number){
     if(id){
-      let idstring = id.toString(); + '/'
+      let idstring = id.toString() + '/'
       return this.http.get(this.url + idstring)
     }
     return this.http.get(this.url)

@@ -1,7 +1,6 @@
 
     <div [hidden]="submitted" class="p-fluid grid formgrid">
       <form (ngSubmit)="onSubmit()" #personForm="ngForm" name="">
-          {{ model | json }}
         <div class="form-group">
             <label for="name">First Name &nbsp;<i style="color:red;" pTooltip="Required">*</i></label>
             <input type="text" class="form-control"  id="name" required [(ngModel)]="model.name" name="name" #name="ngModel"> 

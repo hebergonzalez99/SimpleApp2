@@ -8,6 +8,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthServiceService {
+  private refreshTokenExpired = false;
 
   constructor(private http: HttpClient) { }
 
@@ -46,13 +47,28 @@ export class AuthServiceService {
   
   refreshToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refresh_token');
-    return this.http.post<{access:string}>("localhost:8000/api/token/refresh/", {
+    console.log("http://localhost:8000/api/token/refresh/", {
       refreshToken
+    });
+    return this.http.post<{access:string, refresh:string}>("http://localhost:8000/api/token/refresh/", {
+      refresh:refreshToken
     }).pipe(
       tap((response) => {
         localStorage.setItem('access_token', response.access);
+        localStorage.setItem('refresh_token', response.refresh);
+        this.refreshTokenExpired = false;
         return response;
+      }),
+      catchError((error) => {
+        if (error.status === 401 && error.error.message === 'Refresh token expired') {
+          this.refreshTokenExpired = true;
+        }
+        return throwError(error);
       })
-    )
+    );
+  }
+
+  isRefreshTokenExpired(): boolean {
+    return this.refreshTokenExpired;
   }
 }
