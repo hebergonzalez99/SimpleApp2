@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Person } from 'src/app/Classes/person';
 
 import { APIService } from 'src/app/Services/api.service';
@@ -10,7 +11,7 @@ import { APIService } from 'src/app/Services/api.service';
 })
 export class EditComponent {
   g = ['Male', 'Female', 'Other', "I'd rather not say"];
-
+  idQP!: number;
   public data:any = [];
   today = new Date()
   fifteenYears = new Date(new Date().setFullYear(this.today.getFullYear() - 15))
@@ -21,7 +22,10 @@ export class EditComponent {
   bd = '';
 
   ngOnInit(): void {
-    this.loadData(1);
+    this.route.queryParams.subscribe(params => {
+      this.idQP = params['id'];
+    });
+    this.loadData(this.idQP);
     
   }
 
@@ -29,6 +33,7 @@ export class EditComponent {
     this.API.get(id).subscribe(res=>{
       this.data = res;
       this.defaultDate = this.getDateFromString(this.data.birthdate);
+      console.log(this.defaultDate);
       this.name = this.data.name;
       this.lastname = this.data.lastname;
       this.gender = this.data.gender;
@@ -46,7 +51,7 @@ export class EditComponent {
       month: '2-digit',
       year: 'numeric'
     });
-    this.sendData(1);
+    this.sendData(this.idQP);
   }
 
   sendData(id:Number){
@@ -62,9 +67,10 @@ export class EditComponent {
     }
     ).subscribe(res => {
       console.log("success!");
+      this.router.navigate(['/table'])
     })
   }
-  constructor(private API:APIService){
+  constructor(private API:APIService, private route: ActivatedRoute, private router: Router){
     this.name = this.data.name;
     this.lastname = this.data.lastname;
     this.gender = this.data.gender;

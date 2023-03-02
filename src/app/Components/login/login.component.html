@@ -1,0 +1,32 @@
+<div class="p-fluid grid formgrid">
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" name="">
+        
+        <div class="field col-12">
+            <label for="email">Email </label>
+            
+            <input type="text" pInputText [(ngModel)]="email" name="email" [required]="true"> 
+            
+        </div> <br>
+        <div class="field col-12">
+            <label for="password">Password</label>
+            
+            <input type="password" pInputText [(ngModel)]="password" name="password" [required]="true"> 
+            
+        </div> <br>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-primary " [disabled]="!loginForm.form.valid">Log In</button><br><br>
+                </div>
+                <div class="col-6">
+                    <button type="submit" class="btn btn-outline-primary" routerLink="/register">Register</button><br><br>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-light" role="alert"*ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+    </form>
+</div>

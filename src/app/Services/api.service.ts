@@ -23,7 +23,7 @@ export class APIService {
   }
 
   public put(id:Number, body:any){
-    let idstring = id.toString(); + '/'
+    let idstring = id.toString() + '/'
     return this.http.put(this.url + idstring, body)
   }
 

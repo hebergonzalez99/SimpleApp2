@@ -10,6 +10,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { HttpClientModule } from '@angular/common/http';
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './Components/navbar/navbar.component';
@@ -19,12 +21,23 @@ import { TableComponent } from './Components/table/table.component';
 import { EditComponent } from './Components/edit/edit.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './Components/home/home.component';
+import { JwtModule } from '@auth0/angular-jwt';
+
+import { LoginComponent } from './Components/login/login.component';
+import { RegisterComponent } from './Components/register/register.component';
+import { AuthGuard } from './auth.guard';
 
 const appRoutes:Routes=[
-  {path:'', component:FormComponent},
-  {path:'table', component:TableComponent},
-  {path:'edit', component:EditComponent}
+  {path:'', component:FormComponent, canActivate:[AuthGuard]},
+  {path:'table', component:TableComponent, canActivate:[AuthGuard]},
+  {path:'edit', component:EditComponent, canActivate:[AuthGuard]},
+  {path:'login', component:LoginComponent},
+  {path:'register', component:RegisterComponent},
 ]
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 @NgModule({
   declarations: [
@@ -33,7 +46,9 @@ const appRoutes:Routes=[
     NavbarComponent,
     BodyComponent,
     TableComponent,
-    EditComponent
+    EditComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +64,14 @@ const appRoutes:Routes=[
     ButtonModule,
     RouterModule,
     RouterModule.forRoot(appRoutes),
+    ReactiveFormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['/login', '/register'],
+        disallowedRoutes: ['', '/table', '/edit'],
+      },
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

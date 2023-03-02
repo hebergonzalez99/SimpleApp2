@@ -1,5 +1,4 @@
-<div class="d-flex justify-content-center">
-  <p-card>
+
     <div [hidden]="submitted" class="p-fluid grid formgrid">
       <form (ngSubmit)="onSubmit()" #personForm="ngForm" name="">
           {{ model | json }}
@@ -68,5 +67,4 @@
       <button type="button" class="btn btn-primary" (click)="submitted=false">Edit</button>
       <button type="button" class="btn btn-success" (click)="sendData()">Send</button>
     </div>
-  </p-card>
-</div>
+
